@@ -1,12 +1,404 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SORPRESA</title>
-    link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <title>Para mi Princesa - Flores Amarillas</title>
     
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'script': ['"Dancing Script"', 'cursive'],
+                        'serif': ['"Playfair Display"', 'serif'],
+                        'sans': ['"Poppins"', 'sans-serif'],
+                    },
+                    colors: {
+                        'spring-yellow': '#FACC15',
+                        'spring-dark': '#A16207',
+                        'spring-bg': '#FFFBEB',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #FFFBEB 0%, #FEF08A 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 32px 0 rgba(250, 204, 21, 0.25);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(-10vh) rotate(0deg) scale(0.8); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg) scale(1.2); opacity: 0; }
+        }
+        .flower {
+            position: absolute;
+            z-index: 0;
+            pointer-events: none;
+            will-change: transform;
+            animation: float linear forwards;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(250, 204, 21, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(250, 204, 21, 0.9), 0 0 30px rgba(250, 204, 21, 0.6); }
+        }
+        .text-glow {
+            animation: glow 3s infinite;
+        }
+
+        @keyframes bounce-pulse {
+            0%, 100% { transform: translateY(0) scale(1); box-shadow: 0 10px 25px -5px rgba(234, 179, 8, 0.5); }
+            50% { transform: translateY(-5px) scale(1.03); box-shadow: 0 20px 25px -5px rgba(234, 179, 8, 0.7); }
+        }
+        .btn-action {
+            animation: bounce-pulse 2.5s infinite ease-in-out;
+            background: linear-gradient(to right, #D97706, #F59E0B, #D97706);
+            background-size: 200% auto;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            z-index: 50;
+            position: relative;
+        }
+        .btn-action:hover {
+            background-position: right center;
+            transform: scale(1.05);
+        }
+
+        .step-container {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .step-container.active {
+            display: flex;
+            opacity: 1;
+            animation: fadeIn 0.6s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .polaroid-frame {
+            background: white;
+            padding: 16px 16px 48px 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-radius: 4px;
+            transform: rotate(-2deg);
+            transition: transform 0.4s ease;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+        .polaroid-frame:hover {
+            transform: rotate(1deg) scale(1.03);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+        .polaroid-frame.alt-rotation {
+            transform: rotate(2deg);
+        }
+        .polaroid-frame.alt-rotation:hover {
+            transform: rotate(-1deg) scale(1.03);
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased p-4 sm:p-6 lg:p-10 flex flex-col items-center min-h-screen">
+
+    <div id="flower-container" class="fixed inset-0 overflow-hidden pointer-events-none z-0"></div>
+
+    <main class="relative z-10 w-full max-w-2xl mx-auto flex-grow flex items-center justify-center py-10">
+        
+        <div class="glass-card w-full rounded-3xl p-6 sm:p-10 lg:p-14 text-center relative shadow-2xl">
+            
+            <!-- Decoraciones de las esquinas -->
+            <svg class="absolute top-0 left-0 text-yellow-300/50 w-24 h-24 transform -translate-x-6 -translate-y-6" fill="currentColor" viewBox="0 0 100 100">
+                <path d="M50 0 C60 20, 80 40, 100 50 C80 60, 60 80, 50 100 C40 80, 20 60, 0 50 C20 40, 40 20, 50 0 Z"/>
+            </svg>
+            <svg class="absolute bottom-0 right-0 text-yellow-400/50 w-32 h-32 transform translate-x-8 translate-y-8" fill="currentColor" viewBox="0 0 100 100">
+                <path d="M50 0 C60 20, 80 40, 100 50 C80 60, 60 80, 50 100 C40 80, 20 60, 0 50 C20 40, 40 20, 50 0 Z"/>
+            </svg>
+
+            <!-- PASO 1: Introducción -->
+            <div id="step-1" class="step-container active flex-col items-center w-full">
+                <div class="w-24 h-24 mb-6 text-yellow-500 drop-shadow-xl animate-[spin_10s_linear_infinite]">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50 10 C55 10, 65 30, 50 45 C35 30, 45 10, 50 10 Z" fill="#FACC15"/>
+                        <path d="M50 90 C45 90, 35 70, 50 55 C65 70, 55 90, 50 90 Z" fill="#FACC15"/>
+                        <path d="M90 50 C90 45, 70 35, 55 50 C70 65, 90 55, 90 50 Z" fill="#FACC15"/>
+                        <path d="M10 50 C10 55, 30 65, 45 50 C30 35, 10 45, 10 50 Z" fill="#FACC15"/>
+                        <path d="M78 22 C82 25, 70 45, 55 45 C50 30, 70 20, 78 22 Z" fill="#FDE047"/>
+                        <path d="M22 78 C18 75, 30 55, 45 55 C50 70, 30 80, 22 78 Z" fill="#FDE047"/>
+                        <path d="M78 78 C75 82, 55 70, 55 55 C70 50, 80 70, 78 78 Z" fill="#FDE047"/>
+                        <path d="M22 22 C25 18, 45 30, 45 30 C30 35, 20 30, 22 22 Z" fill="#FDE047"/>
+                        <circle cx="50" cy="50" r="12" fill="#A16207"/>
+                    </svg>
+                </div>
+
+                <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl text-yellow-600 font-bold mb-2 text-glow">
+                    Para mi princesa
+                </h1>
+                <p class="text-spring-dark font-semibold tracking-widest uppercase text-sm mb-8">Feliz 21 de Septiembre</p>
+                
+                <div class="space-y-4 font-sans text-gray-700 text-base sm:text-lg leading-relaxed mb-8 px-2 text-justify sm:text-center font-medium">
+                    <p>
+                        Hoy es un día especial, el inicio de la primavera, y con ella la tradición de las flores amarillas. Quería hacer algo diferente y único para ti, porque te mereces el mundo entero. Las flores amarillas significan alegría, luz, y un amor que florece y perdura en el tiempo.
+                    </p>
+                    <p>
+                        Así es exactamente como me haces sentir todos los días. Eres mi sol, mi inspiración y la persona con la que quiero compartir todas mis estaciones. He preparado este pequeño detalle para recordarte lo mucho que te amo y lo especial que eres para mí.
+                    </p>
+                </div>
+
+                <div class="mb-10">
+                    <h2 class="font-script text-4xl sm:text-5xl text-spring-dark font-bold">
+                        [Elia Abigail Alfaro Rodriguez]
+                    </h2>
+                </div>
+
+                <button onclick="changeStep(2)" class="btn-action text-white text-xl sm:text-2xl font-bold py-4 px-12 rounded-full flex items-center justify-center gap-3 w-full sm:w-auto shadow-xl mx-auto border-2 border-white/20">
+                    <span>Ver sorpresa 🌻</span>
+                </button>
+            </div>
+
+            <!-- PASO 2: Viaje en Bus -->
+            <div id="step-2" class="step-container flex-col items-center w-full hidden">
+                <h2 class="font-script text-4xl sm:text-5xl text-spring-dark mb-6 font-bold">
+                    Nuestro Recuerdo
+                </h2>
+
+                <div class="polaroid-frame mb-6 w-full sm:w-4/5 lg:w-3/4">
+                    <img src="image_61e475.jpg" alt="Recuerdo en el bus" class="w-full h-auto max-h-[50vh] object-cover rounded-sm border border-gray-100 shadow-inner">
+                </div>
+
+                <div class="font-sans text-gray-800 text-base sm:text-lg leading-relaxed mb-8 max-w-lg mx-auto text-center italic bg-white/50 p-5 rounded-2xl shadow-sm border border-yellow-200">
+                    "Este dia inolvidable para ambos mi princesa, bueno mas para ti porque subiste a un bus aqui en lima me causo mucha risa y sueño el viaje jeje.Lo pase increible ese viaje, lo recuerdo cada dia cuando subo al bus jeje"
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center w-full">
+                    <button onclick="changeStep(1)" class="text-yellow-700 font-semibold py-3 px-8 rounded-full border-2 border-yellow-400 hover:bg-yellow-100 transition duration-300 w-full sm:w-auto order-2 sm:order-1 text-base">
+                        ⬅️ Volver
+                    </button>
+                    <button onclick="changeStep(3)" class="btn-action text-white text-lg font-bold py-3 px-10 rounded-full flex items-center justify-center gap-3 w-full sm:w-auto shadow-xl order-1 sm:order-2 border-2 border-white/20">
+                        <span>Siguiente ❤️</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- PASO 3: Increible mujer -->
+            <div id="step-3" class="step-container flex-col items-center w-full hidden">
+                <h2 class="font-script text-4xl sm:text-5xl text-spring-dark mb-6 font-bold">
+                    Mi mujer hermosa
+                </h2>
+
+                <div class="polaroid-frame alt-rotation mb-6 w-full sm:w-4/5 lg:w-3/4">
+                    <img src="image_554079.jpg" alt="Increible mujer" class="w-full h-auto max-h-[50vh] object-cover rounded-sm border border-gray-100 shadow-inner">
+                </div>
+
+                <div class="font-sans text-gray-800 text-base sm:text-lg leading-relaxed mb-8 max-w-lg mx-auto text-center italic bg-white/50 p-5 rounded-2xl shadow-sm border border-yellow-200">
+                    "Eres una increible mujer amo como me tratas eres hermosa en todos los aspectos eres la unica mujer que me hace sentir especial adoro pasar tiempo juntos cuando estamos aqui en Lima, eres bella mi vida"
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center w-full">
+                    <button onclick="changeStep(2)" class="text-yellow-700 font-semibold py-3 px-8 rounded-full border-2 border-yellow-400 hover:bg-yellow-100 transition duration-300 w-full sm:w-auto order-2 sm:order-1 text-base">
+                        ⬅️ Volver
+                    </button>
+                    <button onclick="changeStep(4)" class="btn-action text-white text-lg font-bold py-3 px-10 rounded-full flex items-center justify-center gap-3 w-full sm:w-auto shadow-xl order-1 sm:order-2 border-2 border-white/20">
+                        <span>Siguiente ❤️</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- PASO 4: Paz y tranquilidad -->
+            <div id="step-4" class="step-container flex-col items-center w-full hidden">
+                <h2 class="font-script text-4xl sm:text-5xl text-spring-dark mb-6 font-bold">
+                    Mi paz
+                </h2>
+
+                <div class="polaroid-frame mb-6 w-full sm:w-4/5 lg:w-3/4">
+                    <img src="image_552d9a.jpg" alt="Paz y tranquilidad" class="w-full h-auto max-h-[50vh] object-cover rounded-sm border border-gray-100 shadow-inner">
+                </div>
+
+                <div class="font-sans text-gray-800 text-base sm:text-lg leading-relaxed mb-8 max-w-lg mx-auto text-center italic bg-white/50 p-5 rounded-2xl shadow-sm border border-yellow-200">
+                    "Pasar momentos a tu lado me trae paz y tranquilidad a mi vida mi amor, salir a pasear, comer y hacer compras es lo mas divertido que hago cuando estoy contigo te amo inmensamente y espero que siempre sigamos saliendo hasta decir basta jeje"
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center w-full">
+                    <button onclick="changeStep(3)" class="text-yellow-700 font-semibold py-3 px-8 rounded-full border-2 border-yellow-400 hover:bg-yellow-100 transition duration-300 w-full sm:w-auto order-2 sm:order-1 text-base">
+                        ⬅️ Volver
+                    </button>
+                    <button onclick="changeStep(5)" class="btn-action text-white text-lg font-bold py-3 px-10 rounded-full flex items-center justify-center gap-3 w-full sm:w-auto shadow-xl order-1 sm:order-2 border-2 border-white/20">
+                        <span>Siguiente ❤️</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- PASO 5: Niño interior -->
+            <div id="step-5" class="step-container flex-col items-center w-full hidden">
+                <h2 class="font-script text-4xl sm:text-5xl text-spring-dark mb-6 font-bold">
+                    Diversión contigo
+                </h2>
+
+                <div class="polaroid-frame alt-rotation mb-6 w-full sm:w-4/5 lg:w-3/4">
+                    <img src="image_54c515.jpg" alt="Niño interior" class="w-full h-auto max-h-[50vh] object-cover rounded-sm border border-gray-100 shadow-inner">
+                </div>
+
+                <div class="font-sans text-gray-800 text-base sm:text-lg leading-relaxed mb-8 max-w-lg mx-auto text-center italic bg-white/50 p-5 rounded-2xl shadow-sm border border-yellow-200">
+                    "Me haces hacer cosas que de mi no saldrian, haces que salga mi niño interior o mi payaso jaja, me gusta como tu iniciativas eso en mi espero que siempre lo sigas haciendo porque me haces muy feliz amor"
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center w-full">
+                    <button onclick="changeStep(4)" class="text-yellow-700 font-semibold py-3 px-8 rounded-full border-2 border-yellow-400 hover:bg-yellow-100 transition duration-300 w-full sm:w-auto order-2 sm:order-1 text-base">
+                        ⬅️ Volver
+                    </button>
+                    <button onclick="changeStep(6)" class="btn-action text-white text-lg font-bold py-3 px-10 rounded-full flex items-center justify-center gap-3 w-full sm:w-auto shadow-xl order-1 sm:order-2 border-2 border-white/20">
+                        <span>Siguiente ❤️</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- PASO 6: Nuestro futuro -->
+            <div id="step-6" class="step-container flex-col items-center w-full hidden">
+                <h2 class="font-script text-4xl sm:text-5xl text-spring-dark mb-6 font-bold">
+                    Compañera de vida
+                </h2>
+
+                <div class="polaroid-frame mb-6 w-full sm:w-4/5 lg:w-3/4">
+                    <img src="image_535821.jpg" alt="Nuestro futuro" class="w-full h-auto max-h-[50vh] object-cover rounded-sm border border-gray-100 shadow-inner">
+                </div>
+
+                <div class="font-sans text-gray-800 text-base sm:text-lg leading-relaxed mb-8 max-w-lg mx-auto text-center italic bg-white/50 p-5 rounded-2xl shadow-sm border border-yellow-200">
+                    "Asi como disfrutamos la salidas desde ahora, espero que lo sigamos haciendo y construir lo nuestro con nuestro propio esfuerzo, quiero que seas mi compañera de vida mi amor. Crecer ambos tener todo lo nuestro sin la necesidad de pedir nada a nadie, solo seremos tu y yo, te amo con todo mi corazon y feliz dia de primavera mi vida"
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center w-full">
+                    <button onclick="changeStep(5)" class="text-yellow-700 font-semibold py-3 px-8 rounded-full border-2 border-yellow-400 hover:bg-yellow-100 transition duration-300 w-full sm:w-auto order-2 sm:order-1 text-base">
+                        ⬅️ Volver
+                    </button>
+                    <button onclick="changeStep(7)" class="btn-action text-white text-lg font-bold py-3 px-10 rounded-full flex items-center justify-center gap-3 w-full sm:w-auto shadow-xl order-1 sm:order-2 border-2 border-white/20">
+                        <span>Sorpresa Final 🌻</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- PASO 7: Mensaje Final -->
+            <div id="step-7" class="step-container flex-col items-center w-full hidden py-10">
+                <div class="w-32 h-32 mb-8 text-yellow-500 drop-shadow-2xl animate-bounce">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50 10 C55 10, 65 30, 50 45 C35 30, 45 10, 50 10 Z" fill="#FACC15"/>
+                        <path d="M50 90 C45 90, 35 70, 50 55 C65 70, 55 90, 50 90 Z" fill="#FACC15"/>
+                        <path d="M90 50 C90 45, 70 35, 55 50 C70 65, 90 55, 90 50 Z" fill="#FACC15"/>
+                        <path d="M10 50 C10 55, 30 65, 45 50 C30 35, 10 45, 10 50 Z" fill="#FACC15"/>
+                        <path d="M78 22 C82 25, 70 45, 55 45 C50 30, 70 20, 78 22 Z" fill="#FDE047"/>
+                        <path d="M22 78 C18 75, 30 55, 45 55 C50 70, 30 80, 22 78 Z" fill="#FDE047"/>
+                        <path d="M78 78 C75 82, 55 70, 55 55 C70 50, 80 70, 78 78 Z" fill="#FDE047"/>
+                        <path d="M22 22 C25 18, 45 30, 45 30 C30 35, 20 30, 22 22 Z" fill="#FDE047"/>
+                        <circle cx="50" cy="50" r="14" fill="#A16207"/>
+                        <circle cx="50" cy="50" r="8" fill="#854D0E"/>
+                    </svg>
+                </div>
+                
+                <h1 class="font-serif text-5xl sm:text-6xl text-yellow-600 font-bold mb-6 text-glow leading-tight">
+                    ¡Feliz Día de las <br> Flores Amarillas!
+                </h1>
+                
+                <p class="font-sans text-gray-700 text-xl sm:text-2xl mb-12 max-w-md mx-auto italic font-medium">
+                    Te amo con todo mi corazón, princesa.
+                </p>
+
+                <button onclick="changeStep(1)" class="text-yellow-700 font-bold py-4 px-10 rounded-full border-2 border-yellow-400 hover:bg-yellow-100 transition duration-300 shadow-md">
+                    🔄 Volver a empezar
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        function changeStep(stepNumber) {
+            // Ocultar todos los pasos
+            document.querySelectorAll('.step-container').forEach(step => {
+                step.classList.remove('active');
+                setTimeout(() => {
+                    step.classList.add('hidden');
+                }, 150);
+            });
+
+            // Mostrar el paso objetivo después de una breve pausa
+            setTimeout(() => {
+                const targetStep = document.getElementById('step-' + stepNumber);
+                if (targetStep) {
+                    targetStep.classList.remove('hidden');
+                    // Forzar un reflow para que la animación se reinicie
+                    void targetStep.offsetWidth; 
+                    targetStep.classList.add('active');
+                    // Desplazar suavemente hacia arriba
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }, 200);
+        }
+
+        // Variaciones de flores SVG para la lluvia
+        const flowerIcons = [
+            `<svg viewBox="0 0 100 100" class="w-full h-full fill-yellow-400"><path d="M50,15 C55,15 60,35 50,45 C40,35 45,15 50,15 Z" /><path d="M50,85 C45,85 40,65 50,55 C60,65 55,85 50,85 Z" /><path d="M85,50 C85,45 65,40 55,50 C65,60 85,55 85,50 Z" /><path d="M15,50 C15,55 35,60 45,50 C35,40 15,45 15,50 Z" /><circle cx="50" cy="50" r="10" class="fill-yellow-600"/></svg>`,
+            `<svg viewBox="0 0 100 100" class="w-full h-full fill-yellow-300"><path d="M50,0 C70,25 70,25 50,50 C30,25 30,25 50,0 Z"/><path d="M50,100 C70,75 70,75 50,50 C30,75 30,75 50,100 Z"/><path d="M100,50 C75,70 75,70 50,50 C75,30 75,30 100,50 Z"/><path d="M0,50 C25,70 25,70 50,50 C25,30 25,30 0,50 Z"/><circle cx="50" cy="50" r="12" class="fill-amber-500"/></svg>`,
+            `<svg viewBox="0 0 100 100" class="w-full h-full fill-yellow-200 opacity-70"><path d="M50,0 Q50,50 100,50 Q50,50 50,100 Q50,50 0,50 Q50,50 50,0 Z"/></svg>`
+        ];
+
+        function createFallingFlower() {
+            const container = document.getElementById('flower-container');
+            if(!container) return;
+            
+            const flower = document.createElement('div');
+            const size = Math.random() * 25 + 15; // 15px a 40px
+            const startX = Math.random() * 100; // Posición horizontal aleatoria
+            const duration = Math.random() * 7 + 8; // 8s a 15s cayendo
+            const flowerType = flowerIcons[Math.floor(Math.random() * flowerIcons.length)];
+
+            flower.className = 'flower';
+            flower.style.width = `${size}px`;
+            flower.style.height = `${size}px`;
+            flower.style.left = `${startX}vw`;
+            flower.style.top = `-10vh`;
+            flower.style.animationDuration = `${duration}s`;
+            
+            flower.innerHTML = flowerType;
+            container.appendChild(flower);
+
+            // Eliminar elemento del DOM una vez termine la animación
+            setTimeout(() => {
+                if(flower.parentNode) {
+                    flower.remove();
+                }
+            }, duration * 1000);
+        }
+
+        // Crear flores iniciales esparcidas
+        for (let i = 0; i < 15; i++) {
+            setTimeout(createFallingFlower, Math.random() * 3000);
+        }
+        
+        // Generar nuevas flores continuamente
+        setInterval(createFallingFlower, 900);
+    </script>
 </body>
 </html>
